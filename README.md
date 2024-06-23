@@ -21,12 +21,16 @@ This program connects to OneDrive to:
     npm install
     ```
 
-3. Set up environment variables for your Azure AD application credentials:
-    - `CLIENT_ID`
-    - `TENANT_ID`
-    - `CLIENT_SECRET`
-    - `SESSION_SECRET`  // Cookie session secret
-
+3.  **Setup Environment Variables**
+    Create a `.env` file in the root directory of 'onedrive-poc' and add the following environment variables:
+    ```
+    CLIENT_ID=
+    TENANT_ID=
+    CLIENT_SECRET=
+    SESSION_SECRET=
+    ```
+    Note: While new App registaion at Azure make sure to added 'Redirect URI' as `http://localhost:3001/v1/auth/ms/cb`
+    
 4. Start the server:
     ```bash
     npm run start
@@ -86,7 +90,7 @@ This program connects to OneDrive to:
 ```
 
 ## Test the real-time updates:
-- Enter a valid OneDrive file ID and click the "Watch File" button.
+- Login with valid a OneDrive account and click the "Watch File" button.
 - The permissions will be displayed and updated in real-time as they change.
 
 ## Contributing
