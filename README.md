@@ -25,6 +25,7 @@ This program connects to OneDrive to:
     - `CLIENT_ID`
     - `TENANT_ID`
     - `CLIENT_SECRET`
+    - `SESSION_SECRET`  // Cookie session secret
 
 4. Start the server:
     ```bash
