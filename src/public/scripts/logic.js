@@ -7,7 +7,8 @@ const ApiV1 = '/v1'
 const Store = {
     treeList: null,
     userInfo: null,
-    fileList: []
+    fileList: [],
+    listBtnClicked: false
 }
 
 const getUserDetails = async() => {
@@ -26,8 +27,7 @@ const getFileList = async() => {
     if (response.success) {
         // console.log( response.data )
         Store.treeList = response.data
-        const listFilesButton = document.getElementById('list-files');
-        listFilesButton.disabled = false;
+        toggleButton('list-files')
     }
 }
 
@@ -38,6 +38,10 @@ const init = async() => {
 
 init();
 
+const toggleButton = (id) => {
+    const listFilesButton = document.getElementById(id);
+    listFilesButton.disabled = listFilesButton.disabled ? false : true;
+}
 
 const onDownloadFile = (fileName, downloadUrl) => {
     // Create an anchor element
@@ -82,7 +86,12 @@ const updatePermissions = (permissions) => {
 // On Click on button 'List Files'
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('list-files').onclick = async function() {
+
+        if(Store.listBtnClicked) return;
         
+        Store.listBtnClicked = true
+        toggleButton('list-files')
+
         function renderTree(parentContainer, items = {}) {
             for(let [key, item] of Object.entries(items)) {
 
