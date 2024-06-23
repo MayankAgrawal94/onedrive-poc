@@ -12,7 +12,7 @@ This program connects to OneDrive to:
 
 1. Clone the repository:
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/MayankAgrawal94/onedrive-poc.git
     cd onedrive-poc
     ```
 
@@ -34,8 +34,63 @@ This program connects to OneDrive to:
 5. Open the client:
     Open `http://localhost:3001` in a web browser.
 
-6. 
+## Project Structure
+```
+.
+├── package.json
+├── package-lock.json
+├── README.md
+└── src
+    ├── app
+    │   ├── controllers
+    │   │   ├── auth
+    │   │   │   ├── basic.auth.controller.js
+    │   │   │   └── ms.auth.controller.js
+    │   │   └── msOneDrive.controller.js
+    │   ├── helpers
+    │   │   ├── genericFun.js
+    │   │   └── onedrive.js
+    │   ├── routes
+    │   │   ├── auth
+    │   │   │   ├── basicAuth.routes.js
+    │   │   │   └── msAuth.routes.js
+    │   │   └── msOneDrive.routes.js
+    │   └── services
+    │       ├── auth
+    │       │   ├── index.js
+    │       │   ├── oauthCallback.js
+    │       │   ├── oauthRequest.js
+    │       │   └── refreshToken.js
+    │       └── onedrive.js
+    ├── app.js
+    ├── config
+    │   ├── env.js
+    │   └── session.config.js
+    ├── middleware
+    │   └── isAuthenticated.js
+    ├── public
+    │   ├── assests
+    │   │   ├── document-icon.png
+    │   │   ├── download-icon.png
+    │   │   └── folder-icon.png
+    │   ├── index.html
+    │   ├── scripts
+    │   │   └── logic.js
+    │   ├── styles
+    │   │   ├── tree-container.css
+    │   │   └── welcome.css
+    │   └── welcome.html
+    ├── server.js
+    └── socket.js
+```
 
-7. Test the real-time updates:
-    - Enter a valid OneDrive file ID and click the "Watch File" button.
-    - The permissions will be displayed and updated in real-time as they change.
+## Test the real-time updates:
+- Enter a valid OneDrive file ID and click the "Watch File" button.
+- The permissions will be displayed and updated in real-time as they change.
+
+## Contributing
+If you have any suggestions or improvements, feel free to submit a pull request or open an issue.
+
+## Contact
+If you have any feedback, questions, or suggestions, feel free to reach out.
+connect me at `jobs@mayankagrawal.co.in` or can DM me on [LinkedIn](https://www.linkedin.com/in/mayank-agrawal-59192940/).
