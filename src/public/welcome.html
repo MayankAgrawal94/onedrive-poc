@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <link rel="stylesheet" href="/public/styles/welcome.css">
+    <link rel="stylesheet" href="/public/styles/tree-container.css">
+    <script src="/public/scripts/logic.js"></script>
+</head>
+<body>
+    
+    <section class="main">
+        <h1>Welcome '<span id="username"></span>'</h1>
+        <div class="logout">
+            <button id="logout">Logout</button>
+        </div>
+        <div>
+            <button id="list-files" disabled>List Files</button>
+            <div id="tree-container" class="tree-main"></div>
+        </div>
+    </section>
+   
+    <script>
+        document.getElementById('logout').onclick = function() {
+            window.location.href = '/v1/basic/logout';
+        };
+    </script>
+</body>
+</html>

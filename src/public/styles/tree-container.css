@@ -1,0 +1,52 @@
+/* tree-container.css */
+.tree-main {
+  margin-top: 25px;
+}
+
+.tree-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+  
+.folder-icon,
+.file-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.folder-icon {
+  background-image: url('/public/assests/folder-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.file-icon {
+  background-image: url('/public/assests/document-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.download-icon {
+  cursor: pointer;
+  background-image: url('/public/assests/download-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  margin-left: 3px;
+}
+
+.folder-children {
+  margin-left: 20px;
+}
+
+.tree-line-vertical {
+  margin-left: 10px; /* Align with the indentation of the child items */
+}
+
+.shared-list {
+  color: brown;
+  margin-left: 5px;
+}
