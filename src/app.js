@@ -39,17 +39,4 @@ app.use(`/${ApiV1}/ms/onedrive`, msOnedrive)
 
 app.use(`/${ApiV1}/basic`, basicAuth);
 
-// io.on('connection', (socket) => {
-//     console.log('A user connected');
-
-//     socket.on('watchFile', (fileId) => {
-//         console.log(`Watching file: ${fileId}`);
-//         pollPermissions(fileId, socket);
-//     });
-
-//     socket.on('disconnect', () => {
-//         console.log('User disconnected');
-//     });
-// });
-
 module.exports = server;
