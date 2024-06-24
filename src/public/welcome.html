@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    <link rel="stylesheet" href="/public/styles/welcome.css">
-    <link rel="stylesheet" href="/public/styles/tree-container.css">
-    <script src="/public/scripts/logic.js"></script>
+    <link rel="stylesheet" href="/styles/welcome.css">
+    <link rel="stylesheet" href="/styles/tree-container.css">
+    <script type="module" src="/scripts/welcome/main.js"></script>
 </head>
 <body>
     
@@ -18,7 +18,7 @@
         </div>
         <div>
             <button id="list-files" disabled>List Files</button>
-            <img id="btn-list-loader-01" src="/public/assests/loader.svg" alt="Loading..." class="loader-icon">
+            <img id="btn-list-loader-01" src="/assests/loader.svg" alt="Loading..." class="loader-icon">
 
             <div id="tree-container" class="tree-main"></div>
         </div>
