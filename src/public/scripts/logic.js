@@ -28,6 +28,7 @@ const getFileList = async() => {
         // console.log( response.data )
         Store.treeList = response.data
         toggleButton('list-files')
+        toggleLoader('btn-list-loader-01')
     }
 }
 
@@ -42,6 +43,23 @@ const toggleButton = (id) => {
     const listFilesButton = document.getElementById(id);
     listFilesButton.disabled = listFilesButton.disabled ? false : true;
 }
+
+const toggleLoader = (id) => {
+    const loaderElement = document.getElementById(id);
+
+    if (!loaderElement) {
+        console.error(`Element with ID "${id}" not found`);
+        return;
+    }
+
+    const displayStyle = window.getComputedStyle(loaderElement).display;
+
+    if ('inline-block'.includes(displayStyle)) {
+        loaderElement.style.display = 'none';
+    } else {
+        loaderElement.style.display = 'inline-block';
+    }
+};
 
 const onDownloadFile = (fileName, downloadUrl) => {
     // Create an anchor element
@@ -60,21 +78,23 @@ const onDownloadFile = (fileName, downloadUrl) => {
 }
 
 const getSharedName = (sharedValues) => {
-    const displayNames = sharedValues.map(obj => obj.userDisplayName)
+    let displayNames = sharedValues.map(obj => obj.userDisplayName)
                             .filter(name => name != null);
+    displayNames = [...new Set(displayNames)]               
     return displayNames.join(', ');
 }
 
 const updatePermissions = (permissions) => {
     permissions.map((item, i) => {
         // Select the span element by its ID
-        let spanElement = document.getElementById(Store.fileList[i]);
+        let spanElement = document.getElementById(item.data.parentId);
         if( item.success 
-            && Array.isArray(item.data) 
-                && item.data.length > 0 ) {
+            && item.data 
+                && Array.isArray(item.data.value) 
+                    && item.data.value.length > 0 ) {
 
             // Change the text content
-            const sharedName = getSharedName(item.data)
+            const sharedName = getSharedName(item.data.value)
             spanElement.textContent = `${sharedName ? `(${sharedName})` : ''}`
         } else {
             spanElement.textContent = ''
@@ -108,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     innerHTML += `<span class="shared-list" id="${key}"> ${userList} </span>`
                     div.innerHTML = innerHTML
-                    div.title = 'Nested folder - Work in Progress (Not Covered in Proof of Concept)'; 
+                    // div.title = 'Nested folder - Work in Progress (Not Covered in Proof of Concept)'; 
                     const folderDiv = document.createElement('div');
                     folderDiv.classList.add('tree-folder');
                     folderDiv.appendChild(div);
@@ -120,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     folderDiv.appendChild(folderChildrenContainer);
             
                     // Recursively render this folder's children
-                    renderTree(folderChildrenContainer, item.children);
+                    renderTree(folderChildrenContainer, item.child.value);
                 } else {
                     let innerHTML = '<span class="file-icon"></span><span>' + item.name + '</span>';
                     let userList = ''

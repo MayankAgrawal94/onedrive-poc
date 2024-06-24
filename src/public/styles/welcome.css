@@ -6,3 +6,20 @@
     width: 98%;
     text-align: right;
 }
+
+#list-files[disabled] +.loader-icon {
+    /* opacity: 0.5;  */
+    /* Make the icon semi-transparent when the button is disabled */
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.loader-icon {
+    animation: spin 2s linear infinite; /* Adjust the duration as needed */
+    /* Other styles remain the same */
+    width: 22px; /* Example width */
+    height: 22px; /* Example height */
+    vertical-align: middle;
+    margin-left: 5px; /* Space between the text and the icon */
+}
