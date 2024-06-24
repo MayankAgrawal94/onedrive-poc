@@ -17,20 +17,20 @@
 }
 
 .folder-icon {
-  background-image: url('/public/assests/folder-icon.png');
+  background-image: url('/assests/folder-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .file-icon {
-  background-image: url('/public/assests/document-icon.png');
+  background-image: url('/assests/document-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .download-icon {
   cursor: pointer;
-  background-image: url('/public/assests/download-icon.png');
+  background-image: url('/assests/download-icon.png');
   background-size: contain;
   background-repeat: no-repeat;
   width: 16px;
