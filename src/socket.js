@@ -40,11 +40,15 @@ const pollPermissions = async(fileIds, socket) => {
     const checkPermissions = async () => {
         try {
             // Map over the array of IDs to create an array of promises
-            const permissionRequests = fileIds.map(id => 
-                getFilePermissions(accessToken, id));
-            const currentPermissions = await Promise.all(permissionRequests);
+            // const permissionRequests = fileIds.map(id => 
+            //     getFilePermissions(accessToken, id));
+            // const currentPermissions = await Promise.all(permissionRequests);
 
-            socket.emit('permissionsUpdated', currentPermissions);
+            fileIds.map(async (id, i) => {
+                const result = await getFilePermissions(accessToken, id);
+                socket.emit('permissionsUpdated', [result]);
+            })
+
         } catch (err) {
             console.error('Error polling permissions:', error.message);
         }
