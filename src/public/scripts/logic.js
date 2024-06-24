@@ -28,6 +28,7 @@ const getFileList = async() => {
         // console.log( response.data )
         Store.treeList = response.data
         toggleButton('list-files')
+        toggleLoader('btn-list-loader-01')
     }
 }
 
@@ -42,6 +43,23 @@ const toggleButton = (id) => {
     const listFilesButton = document.getElementById(id);
     listFilesButton.disabled = listFilesButton.disabled ? false : true;
 }
+
+const toggleLoader = (id) => {
+    const loaderElement = document.getElementById(id);
+
+    if (!loaderElement) {
+        console.error(`Element with ID "${id}" not found`);
+        return;
+    }
+
+    const displayStyle = window.getComputedStyle(loaderElement).display;
+
+    if ('inline-block'.includes(displayStyle)) {
+        loaderElement.style.display = 'none';
+    } else {
+        loaderElement.style.display = 'inline-block';
+    }
+};
 
 const onDownloadFile = (fileName, downloadUrl) => {
     // Create an anchor element
