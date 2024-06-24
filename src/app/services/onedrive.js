@@ -1,6 +1,6 @@
 const { default: axios } = require("axios");
 const { MsOAuth2Config } = require("../../config/env");
-const { parseItemList, parsePermission } = require("../helpers/onedrive");
+const { parseItemList, parsePermission } = require("../helpers/parse.onedrive");
 
 const listAllItemInDrive = async (accessToken) => {
     try {
