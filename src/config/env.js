@@ -6,9 +6,9 @@ const BasicConfig = {
 }
 
 const MsOAuth2Config = {
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    tenantId: process.env.TENANT_ID,
+    clientId: process.env.AZURE_CLIENT_ID,
+    clientSecret: process.env.AZURE_CLIENT_SECRET,
+    tenantId: process.env.AZURE_TENANT_ID,
     redirectUri: `${process.env.BASE_URL}/v1/auth/ms/cb`,
     msAuthEndpoint: process.env.MS_AUTH_ENDPOINT || 'https://login.microsoftonline.com/common/oauth2/v2.0',
     // Microsoft Graph API

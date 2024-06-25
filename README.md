@@ -32,14 +32,14 @@ This application implements Microsoft OAuth2 for secure login and authorization.
     PORT=3001
     BASE_URL=http://localhost:3001
 
-    CLIENT_ID=
-    CLIENT_SECRET=
-    TENANT_ID=
+    AZURE_CLIENT_ID=
+    AZURE_CLIENT_SECRET=
+    AZURE_TENANT_ID=
     MS_AUTH_ENDPOINT=https://login.microsoftonline.com/common/oauth2/v2.0
     MS_GRAPH_ENDPOINT=https://graph.microsoft.com/v1.0
 
-    SESSION_SECRET=
-    COOKIE_MAX_AGE=1
+    SESSION_SECRET=     #For internal 'express-session' configuration
+    COOKIE_MAX_AGE=1    # in days
 
     ```
 
