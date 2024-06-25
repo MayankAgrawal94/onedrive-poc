@@ -1,3 +1,4 @@
+const { BasicConfig } = require("../../../config/env");
 const { msAuthReq, msCallback } = require("../../services/auth")
 
 const initiateMicrosoftOAuth2 = (req, res) => {
@@ -25,7 +26,7 @@ const microsoftAuthCallback = async (req, res) => {
                 console.error(err)
                 return res.status(500).send('Error saving session')
             }
-            res.redirect('http://localhost:3001/welcome')
+            res.redirect(BasicConfig.afterLoginHomePageURI)
             console.log(`session: ${req.sessionID} | ATH-MS | microsoftAuthCallback | Request Successfull`)
         })
     } catch (err) {
