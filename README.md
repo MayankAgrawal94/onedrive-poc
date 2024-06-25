@@ -8,6 +8,10 @@ This program connects to OneDrive to:
 - List all users who have access to a file
 - Provides real-time updates on user access changes
 
+## Authentication
+
+This application implements Microsoft OAuth2 for secure login and authorization. Users will be prompted to log in with their Microsoft account, granting the application access to their OneDrive data. The OAuth2 flow ensures that user credentials are handled securely and that the application only accesses the resources explicitly permitted by the user.
+
 ## How to execute it?
 
 1. Clone the repository:
@@ -22,14 +26,24 @@ This program connects to OneDrive to:
     ```
 
 3.  **Setup Environment Variables**
-    Create a `.env` file in the root directory of 'onedrive-poc' and add the following environment variables:
+    Create a `.env` file in the root directory of `onedrive-poc` and add the following environment variables, filling in the missing values:
+
     ```
+    PORT=3001
+    BASE_URL=http://localhost:3001
+
     CLIENT_ID=
-    TENANT_ID=
     CLIENT_SECRET=
+    TENANT_ID=
+    MS_AUTH_ENDPOINT=https://login.microsoftonline.com/common/oauth2/v2.0
+    MS_GRAPH_ENDPOINT=https://graph.microsoft.com/v1.0
+
     SESSION_SECRET=
+    COOKIE_MAX_AGE=1
+
     ```
-    Note: While new App registaion at Azure make sure to added 'Redirect URI' as `http://localhost:3001/v1/auth/ms/cb`
+
+    **Note:** When registering a new app in Azure, make sure to add the 'Redirect URI' as `{BASE_URL}/v1/auth/ms/cb`.
     
 4. Start the server:
     ```bash
