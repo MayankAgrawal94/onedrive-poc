@@ -1,4 +1,4 @@
-const { listAllItemInDrive } = require("../services/onedrive");
+const { OneDrive } = require("../services/onedrive");
 const { 
     fetchAndSetPermissions, 
     fetchAndSetChildrenRecursive 
@@ -19,17 +19,18 @@ const {
 **/
 const getMsOneDriveFiles = async (req, res) => {
     try {
-        const result = await listAllItemInDrive(req.msAccessToken);
+        const oneDriveService = new OneDrive(req.session)
+        const result = await oneDriveService.listAllItemInDrive(req.msAccessToken);
 
         if (result && result.success) {
             const { sharedItemIds, childExistsIds, parseValues } = result.data;
 
             if (Array.isArray(sharedItemIds) && sharedItemIds.length > 0) {
-                await fetchAndSetPermissions(req.msAccessToken, sharedItemIds, parseValues);
+                await fetchAndSetPermissions(oneDriveService, sharedItemIds, parseValues);
             }
 
             if (Array.isArray(childExistsIds) && childExistsIds.length > 0) {
-                await fetchAndSetChildrenRecursive(req.msAccessToken, childExistsIds, parseValues);
+                await fetchAndSetChildrenRecursive(oneDriveService, childExistsIds, parseValues);
             }
 
             return res.send({

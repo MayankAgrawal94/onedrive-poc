@@ -2,7 +2,7 @@
 const socketIo = require('socket.io');
 const app = require('./app');
 const sessionMiddleware = require('./config/session.config');
-const { getFilePermissions } = require('./app/services/onedrive');
+const { OneDrive } = require('./app/services/onedrive');
 const io = socketIo(app);
 
 
@@ -35,7 +35,7 @@ io.use(async (socket, next) => {
 });
 
 const pollPermissions = async(fileIds, socket) => {
-    const accessToken = socket.session.user.auth.access_token
+    const onedriveService = new OneDrive(socket.session)
 
     const checkPermissions = async () => {
         try {
@@ -45,7 +45,7 @@ const pollPermissions = async(fileIds, socket) => {
             // const currentPermissions = await Promise.all(permissionRequests);
 
             fileIds.map(async (id, i) => {
-                const result = await getFilePermissions(accessToken, id);
+                const result = await onedriveService.getFilePermissions(id);
                 socket.emit('permissionsUpdated', [result]);
             })
 

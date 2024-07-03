@@ -1,7 +1,6 @@
-const { getFilePermissions, listChildrenItems } = require("../services/onedrive");
 
-const fetchAndSetPermissions = async (token, itemIds, parseValues) => {
-    const permissionRequests = itemIds.map(id => getFilePermissions(token, id));
+const fetchAndSetPermissions = async (oneDriveService, itemIds, parseValues) => {
+    const permissionRequests = itemIds.map(id => oneDriveService.getFilePermissions(id));
     const permissions = await Promise.all(permissionRequests);
 
     permissions.forEach(item => {
@@ -11,8 +10,8 @@ const fetchAndSetPermissions = async (token, itemIds, parseValues) => {
     });
 }
 
-const fetchAndSetChildrenRecursive = async (token, itemIds, parseValues) => {
-    const childrenListRequests = itemIds.map(id => listChildrenItems(token, id));
+const fetchAndSetChildrenRecursive = async (oneDriveService, itemIds, parseValues) => {
+    const childrenListRequests = itemIds.map(id => oneDriveService.listChildrenItems(id));
     const childrenListResults = await Promise.all(childrenListRequests);
 
     for (const item of childrenListResults) {
@@ -21,11 +20,11 @@ const fetchAndSetChildrenRecursive = async (token, itemIds, parseValues) => {
             parseValues[item.data.parentId]['child']['value'] = childValue.parseValues;
 
             if (Array.isArray(childValue.sharedItemIds) && childValue.sharedItemIds.length > 0) {
-                await fetchAndSetPermissions(token, childValue.sharedItemIds, parseValues[item.data.parentId]['child']['value']);
+                await fetchAndSetPermissions(oneDriveService, childValue.sharedItemIds, parseValues[item.data.parentId]['child']['value']);
             }
 
             if (Array.isArray(childValue.childExistsIds) && childValue.childExistsIds.length > 0) {
-                await fetchAndSetChildrenRecursive(token, childValue.childExistsIds, parseValues[item.data.parentId]['child']['value']);
+                await fetchAndSetChildrenRecursive(oneDriveService, childValue.childExistsIds, parseValues[item.data.parentId]['child']['value']);
             }
         }
     }
