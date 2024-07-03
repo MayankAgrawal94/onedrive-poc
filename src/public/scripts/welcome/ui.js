@@ -75,9 +75,19 @@ export const renderTree = (parentContainer, items = {}) => {
 }
 
 export const getSharedName = (sharedValues) => {
-    let displayNames = sharedValues.map(obj => obj.userDisplayName).filter(name => name != null);
-    displayNames = [...new Set(displayNames)];
-    return displayNames.join(', ');
+    const displayNamesSet = new Set();
+
+    sharedValues.forEach(obj => {
+        if (!obj.roles.includes('owner') 
+                && Array.isArray(obj.users) && obj.users.length > 0) {
+
+            obj.users.forEach(user => {
+                displayNamesSet.add(user.displayName);
+            })
+        }
+    });
+
+    return Array.from(displayNamesSet).join(', ');
 }
 
 export const onDownloadFile = (fileName, downloadUrl) => {
