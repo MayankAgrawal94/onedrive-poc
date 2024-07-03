@@ -44,7 +44,7 @@ const parseItemList = (rawPayload) => {
                 if (item.shared) {
                     simplifiedItem.shared = {
                         // sharedScope: item.shared.scope,
-                        sharedDateTime: item.shared.sharedDateTime || null,
+                        sharedDateTime: item.shared.sharedDateTime || null, // key 'sharedDateTime' not avaiable in responses
                         value: []
                     }
                     sharedItemIds.push(item.id)
@@ -82,13 +82,35 @@ const parsePermission = (rawPayload) => {
             // Assuming rawPayload is an object containing a key "value" which is an array of items
             const items = rawPayload || [];
             items.forEach(item => {
-                let simplifiedItem = {};
+                let simplifiedItem = {roles: [], users: []};
 
                 simplifiedItem.roles = item.roles
-                simplifiedItem.userDisplayName = item.grantedTo?.user?.displayName?? null;
-                simplifiedItem.email = item.invitation?.email?? null
+                // simplifiedItem.userDisplayName = item.grantedTo?.user?.displayName?? null;
+                // simplifiedItem.email = item.grantedTo?.user?.email?? null;
 
-                simplifiedItems.push(simplifiedItem)
+                if ( Array.isArray(item.grantedToIdentities) 
+                        && item.grantedToIdentities.length > 0) {
+
+                    item.grantedToIdentities.forEach(obj => {
+                        simplifiedItem.users.push({
+                            displayName: obj?.user?.displayName?? null,
+                            email: obj?.user?.email?? null
+                        })
+                    })
+                } else if ( item.grantedTo ) {
+                    simplifiedItem.users.push({
+                        displayName: item.grantedTo?.user?.displayName?? null,
+                        email: item.grantedTo?.user?.email?? null
+                    })
+                }
+                
+
+                if(Array.isArray(simplifiedItem.users) 
+                        && simplifiedItem.users.length > 0){
+
+                    simplifiedItems.push(simplifiedItem)
+                }
+                    
             })
 
             resolve(simplifiedItems)
