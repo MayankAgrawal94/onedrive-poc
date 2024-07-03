@@ -5,7 +5,8 @@ const msAuthReq = () => {
     let url = `${MsOAuth2Config.msAuthEndpoint}/authorize`
     const queryPayload = {
         client_id: MsOAuth2Config.clientId,
-        scope: 'user.read files.readwrite offline_access',
+        // scope: 'user.read files.readwrite offline_access',
+        scope: 'user.read files.read offline_access',
         response_type: 'code',
         redirect_uri: MsOAuth2Config.redirectUri
     }
