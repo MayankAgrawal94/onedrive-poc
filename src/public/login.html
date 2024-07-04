@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Microsoft OneDrive POC</title>
         <link rel="stylesheet" href="/styles/login-panel.css">
-        <script src="/scripts/login.js"></script>
+        <script type="module" src="/scripts/login.js"></script>
     </head>
     <body>
 
@@ -18,6 +18,20 @@
                 </span>
             </button>
         </div>
+        
+        <script>
+            const navigateToAuth = (type) => {
+                let url = null;
+                switch(type) {
+                    case "msft": 
+                        url = '/v1/auth/ms/rq';
+                        break;
+                    default: 
+                        break;
+                }
+                if (url) window.location.href = url;
+            }
+        </script>
 
     </body>
 </html>

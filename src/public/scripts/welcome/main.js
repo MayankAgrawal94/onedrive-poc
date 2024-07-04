@@ -4,8 +4,7 @@ import {
     updateUserInfo, 
     updateFileList, 
     renderTree, 
-    toggleButton, 
-    toggleLoader 
+    toggleButton
 } from '/scripts/welcome/ui.js';
 
 import { watchFiles } from '/scripts/welcome/socket.js';
