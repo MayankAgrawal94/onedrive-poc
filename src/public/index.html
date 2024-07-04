@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <a href="/v1/auth/ms/rq">Login with Microsoft</a>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Microsoft OneDrive POC</title>
+        <link rel="stylesheet" href="/styles/login-panel.css">
+        <script src="/scripts/login.js"></script>
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>Microsoft OneDrive POC</h1>
+            <button class="login-button" id="msft-btn" onclick="navigateToAuth('msft')">
+                <img src="/assests//msft.svg" alt="Microsoft Logo">
+                <span class="msft-lgn-txt">
+                    Log in with Microsoft
+                </span>
+            </button>
+        </div>
+
+    </body>
 </html>
