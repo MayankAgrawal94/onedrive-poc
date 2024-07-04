@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const expressSession = require('./config/session.config');
 const http = require('node:http');
 const path = require('node:path');
+const expressSession = require('./config/session.config');
 
 const app = express();
 const server = http.createServer(app);
@@ -24,11 +24,25 @@ const msOnedrive = require('./app/routes/msOneDrive.routes');
 // Serve the static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.sendFile(`${__dirname}/public/index.html`))
+app.get('/', (req, res) => {
+    page = req.session.user ? '/welcome' : '/login'
+    res.redirect(page)
+})
+
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')) )
 
 app.get('/welcome', isAuthenticated, (req, res) => {
+    console.log("Req come to /welcome")
     res.sendFile(path.join(__dirname, 'public', 'welcome.html'));
 });
+
+app.get(`/${ApiV1}/validate/user-session`, (req, res) => {
+    let isSuccess = false, redirect = '/';
+    if (req.session.user)
+        isSuccess = true, redirect = '/welcome'
+
+    return res.send({success: isSuccess,message: 'Request Executed',redirect})
+})
 
 //Microsoft OAuth2
 app.use(`/${ApiV1}/auth/ms`, msOauth2)

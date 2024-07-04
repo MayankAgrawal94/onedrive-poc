@@ -9,3 +9,8 @@ export const getFileList = async () => {
     const resp = await fetch(`${ApiV1}/ms/onedrive/files/list`);
     return resp.json();
 };
+
+export const checkLoginSession = async () => {
+    const resp = await fetch(`${ApiV1}/validate/user-session`);
+    return resp.json();
+}
