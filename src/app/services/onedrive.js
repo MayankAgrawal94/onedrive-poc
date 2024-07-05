@@ -28,26 +28,11 @@ class OneDrive {
             });
             return {
                 success: true,
-                message: 'Request Executed.',
+                message: 'Request executed successfully',
                 data: await parseFunction(data.value)
             };
         } catch (error) {
-            const msErrorCode = error?.response?.data?.error?.code ?? '';
-
-            console.error(`ERROR - makeApiRequest ${msErrorCode ? `| ${msErrorCode} ` : ''}`
-                + `| ${this.session.id}`, error.response ? error.response.data : error.message);
-
-            if (msErrorCode === 'InvalidAuthenticationToken' && retryCount < this.maxRetries) {
-                const checkUpdate = await updateMsAccessToken(this.session);
-                if (checkUpdate && checkUpdate.success) {
-                    return this.makeApiRequest(url, parseFunction, retryCount + 1);
-                }
-            }
-
-            return {
-                success: false,
-                message: 'Error executing request'
-            };
+            return this.handleError(error, () => this.makeApiRequest(url, parseFunction, retryCount + 1), retryCount);
         }
     }
 
@@ -90,8 +75,8 @@ class OneDrive {
                 batchRequestBody,
                 {
                     headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.accessToken}`
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.accessToken}`
                     }
             })
             
@@ -115,28 +100,32 @@ class OneDrive {
 
             return {
                 success: true,
-                message: 'Request executed.',
+                message: 'Request executed successfully',
                 data: result
             }
         } catch (error) {
-            const msErrorCode = error?.response?.data?.error?.code ?? '';
-
-            console.error(`ERROR - getFilePermissionsInBatch ${msErrorCode ? `| ${msErrorCode} ` : ''}`
-                + `| ${this.session.id}`, error.response ? error.response.data : error.message);
-
-            if (msErrorCode === 'InvalidAuthenticationToken' && retryCount < this.maxRetries) {
-                const checkUpdate = await updateMsAccessToken(this.session);
-                if (checkUpdate && checkUpdate.success) {
-                    return this.getFilePermissionsInBatch(ids, retryCount + 1);
-                }
-            }
-
-            return {
-                success: false,
-                message: 'Error executing request'
-            };
+            return this.handleError(error, () => this.getFilePermissionsInBatch(ids, retryCount + 1), retryCount);
         }
     }
+
+    handleError(error, retryCallback, retryCount) {
+        const msErrorCode = error?.response?.data?.error?.code ?? '';
+        console.error(`ERROR - makeApiRequest ${msErrorCode ? `| ${msErrorCode} ` : ''}`
+            +`| Session ID: ${this.session.id}`, error.response ? error.response.data : error.message);
+    
+        if (msErrorCode === 'InvalidAuthenticationToken' && retryCount < this.maxRetries) {
+            const checkUpdate = updateMsAccessToken(this.session);
+            if (checkUpdate && checkUpdate.success) {
+                return retryCallback();
+            }
+        }
+    
+        return {
+            success: false,
+            message: 'Error executing request'
+        };
+    }
+    
 }
 
 module.exports = {

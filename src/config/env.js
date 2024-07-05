@@ -1,5 +1,5 @@
 const BasicConfig = {
-    port: process.env.PORT || 3001,
+    port: process.env.PORT,
     cookieMaxAge: process.env.COOKIE_MAX_AGE || 1,
     sessionSecret: process.env.SESSION_SECRET,
     afterLoginHomePageURI: `${process.env.BASE_URL}/welcome`,
