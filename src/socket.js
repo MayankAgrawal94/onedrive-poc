@@ -3,35 +3,23 @@ const socketIo = require('socket.io');
 const app = require('./app');
 const sessionMiddleware = require('./config/session.config');
 const { OneDrive } = require('./app/services/onedrive');
+
 const io = socketIo(app);
 
+// Helper function to promisify the session middleware
+const wrapMiddleware = (middleware) => (socket, next) => {
+    middleware(socket.request, {}, next);
+};
 
-// Assuming sessionMiddleware is adapted to work with Promises
-io.use(async (socket, next) => {
-    try {
-        // Attempt to load the session
-        await new Promise((resolve, reject) => {
-            sessionMiddleware(socket.request, {}, (err) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
+io.use(wrapMiddleware(sessionMiddleware));
 
-        // Check if the session has a user property
-        if (!socket.request.session ||!socket.request.session.user) {
-            // Authentication failed because the session does not contain a user
-            return next(new Error('Authentication failed: No user found in session.'));
-        }
-
-        // Attach the session data to the socket object
-        socket.session = socket.request.session;
-
-        // Proceed with the connection
-        next();
-    } catch (err) {
-        // Pass the error to the next middleware
-        next(err);
+// Middleware to check for session user
+io.use((socket, next) => {
+    if (!socket.request.session || !socket.request.session.user) {
+        return next(new Error('Authentication failed: No user found in session.'));
     }
+    socket.session = socket.request.session;
+    next();
 });
 
 const pollPermissions = async(fileIds, socket) => {
@@ -49,15 +37,11 @@ const pollPermissions = async(fileIds, socket) => {
         }
     }
 
-    socket['permission'] = setInterval(checkPermissions, 5000); // Poll every 5 seconds
+    socket.permissionInterval = setInterval(checkPermissions, 5000); // Poll every 5 seconds
 }
 
 io.on('connection', (socket) => {
-    // console.log('A user connected');
-
-    if (socket.session && socket.session.user) {
-        console.log("User '%s' connected", socket.session?.user?.info?.displayName?? 'N/A');
-    }
+    console.log(`User '${socket.session.user.info.displayName ?? 'N/A'}' connected`);
 
     socket.on('watchFile', (fileId) => {
         // console.log(`Watching file: ${fileId}`);
@@ -65,7 +49,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log("User '%s' disconnected", socket.session?.user?.info?.displayName?? 'N/A');
-        if(socket['permission']) clearInterval(socket['permission']);
+        console.log(`User '${socket.session.user.info.displayName ?? 'N/A'}' disconnected`);
+        if (socket.permissionInterval) clearInterval(socket.permissionInterval);
     });
 });
