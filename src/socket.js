@@ -35,22 +35,17 @@ io.use(async (socket, next) => {
 });
 
 const pollPermissions = async(fileIds, socket) => {
+    
     const onedriveService = new OneDrive(socket.session)
 
     const checkPermissions = async () => {
         try {
-            // Map over the array of IDs to create an array of promises
-            // const permissionRequests = fileIds.map(id => 
-            //     getFilePermissions(accessToken, id));
-            // const currentPermissions = await Promise.all(permissionRequests);
-
-            fileIds.map(async (id, i) => {
-                const result = await onedriveService.getFilePermissions(id);
-                socket.emit('permissionsUpdated', [result]);
-            })
-
+            const result = await onedriveService.getFilePermissionsInBatch(fileIds)
+            if( result.success ) {
+                socket.emit('permissionsUpdated', result.data );
+            }
         } catch (err) {
-            console.error('Error polling permissions:', error.message);
+            console.error(`Error polling permissions: ${err?.message?? 'N/A'}`, err);
         }
     }
 
